@@ -1,0 +1,55 @@
+{% extends 'music/base.html' %}
+{% block title  %} Songs{% endblock %}
+{% block body %}
+        <div class="container">
+        <div class="row">
+        <div class="col-md-7 col-sm-12">
+        <div class="well">
+         <table class="table table-striped">
+                 <thead>
+                 <th>Album</th>
+                 <th>Title</th>
+                 <th>Song</th>
+                 </thead>
+
+                 <tbody>
+                 {% for song in object_list %}
+                 <tr>
+                     <td>{{ song.album }}</td>
+                     <td>{{ song.title_name }}</td>
+                     <td> <audio controls="controls" preload='none'>
+            <source src="{{ song.title.url }}" type="audio/mpeg" />
+        </audio></td>
+                 </tr>
+                    {% endfor %}
+                 </tbody>
+             </table>
+           </div>
+          </div>
+         </div>
+                <div class="row">
+                  <div class="col-md-offset-1">
+                {% if is_paginated %}
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li>
+                                <span><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">Previous</a></span>
+                            </li>
+                        {% endif %}
+                        <li class="">
+                            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                            <li>
+                                <span><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">Next</a></span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% else %}
+                    <p>Add more song..</p>
+                {% endif %}
+              </div>
+            </div>
+        </div>
+
+ {% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'music/base.html' %}
+{% block title  %} Song details{% endblock %}
+
+
+{% block body %}
+<div class="container">
+ <div class="row">
+     <div class="col-md-3">
+        <div class="well">
+         <img src="{{ album.album_logo.url}}" class="img-responsive">
+         <p style="font-size: 25px;"> {{ album.artist }} </p>
+            <p style="font-size: 20px;"> Album: {{ album.album_title}} </p>
+            <p style="font-size: 15px;"> Genre: {{ album.genre }} </p>
+        </div>
+      </div>
+
+     <div class="col-md-9">
+        <div class="well">
+        <a href="{% url 'music:addsong' album.id  %}">
+           <span class="glyphicon glyphicon-plus" aria-hidden="TRUE">
+           </span>&nbsp;
+           Add song
+       </a>
+         <table class="table table-striped">
+             <thead>
+             <th>Artist</th>
+             <th>Album</th>
+             <th>Song-title</th>
+             <th>Song</th>
+             <th>Action</th>
+             <th>Genre</th>
+
+             </thead>
+             <tbody>
+             {% for song in album.song_set.all %}
+             <tr>
+                 <td>{{ album.artist }}</td>
+                 <td>{{ album.album_title }}</td>
+                 <td>{{ song.title_name }}</td>
+                 <td>
+                     <audio controls="controls" preload='none'>
+                        <source src="{{ song.title.url }}" type="audio/mpeg" />
+                     </audio>
+                 </td>
+                 <td>
+                     <form action="{% url 'music:songdelete' song.id%}" method="post" style="display: inline; ">
+                        {% csrf_token %}
+                        <input type="hidden"  value="Confirm" />
+                        <button type="submit" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                     </form>
+                 </td>
+                 <td>{{ album.genre }}</td>
+             </tr>
+             {% endfor %}
+             </tbody>
+         </table>
+            <div class="row">
+          <div class="col-md-offset-1">
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li>
+                            <span><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">Previous</a></span>
+                        </li>
+                    {% endif %}
+                    <li class="">
+                        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                    </li>
+                    {% if page_obj.has_next %}
+                        <li>
+                            <span><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">Next</a></span>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <p>Add more song..</p>
+            {% endif %}
+          </div>
+        </div>
+
+        </div>
+      </div>
+ </div>
+</div>
+
+
+{% endblock %}

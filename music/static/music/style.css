@@ -1,0 +1,67 @@
+body{
+    background-image: url("images/back.jpg");
+}
+
+.navbar{
+    border-radius: 0;
+}
+
+.navbar-brand{
+    font-family: 'lobster', cursive ;
+}
+
+.image {
+    position: relative;
+    width: 100%; /* for IE 6 */
+}
+
+h2 {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+h2 span {
+    color: bisque;
+    font: bold 2rem/2.8125rem cursive;
+    letter-spacing: -1px;
+    background: rgb(0, 0, 0); /* fallback color */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.6%;
+}
+
+h2 span.spacer {
+   padding:0 5px;
+}
+
+h3 {
+   position: absolute;
+   top: 1%;
+   width: 100%;
+    text-align: center;
+}
+
+h3 span {
+    color: bisque;
+    font: bold 2rem/2.8125rem cursive;
+    letter-spacing: -1px;
+    padding: 0.2%;
+}
+h4 {
+   position: absolute;
+   top: 25%;
+   text-align: right;
+   width: 100%;
+}
+
+h4 span {
+    color: bisque;
+    font: bold 3rem/4rem cursive;
+    letter-spacing: -1px;
+    background: rgb(0, 0, 0); /* fallback color */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0;
+}
+

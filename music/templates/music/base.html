@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title  %} Music{% endblock %}</title>
+    {% load staticfiles %}
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
+
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}" />
+</head>
+
+
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'music:index' %}">Muzic</a>
+        </div>
+        <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="{% url 'music:index' %}">
+                        <span class="glyphicon glyphicon-cd" aria-hidden="TRUE"></span>&nbsp;
+                        Albums
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'music:song' %}">
+                        <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                        songs
+                    </a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search" method="GET" action="">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
+                </div>
+                <button type="submit" class="btn btn-default" value="search">Search</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'music:index' %}">
+                            <span class="glyphicon glyphicon-user" aria-hidden="TRUE"></span>&nbsp;
+                            welcome,{{ user.username }}
+
+
+                        </a>
+                            {% else %}
+                             <a href="{% url 'music:login' %}">
+                            <span class="glyphicon glyphicon-user" aria-hidden="TRUE"></span>&nbsp;
+                            signin
+                        </a>
+                    {% endif%}
+                </li>
+                <li>
+                    <a href="{% url 'music:album-add' %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="TRUE"></span>&nbsp;
+                        Add album
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{% url 'music:logout' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="TRUE"></span>&nbsp;
+                        logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% if user.is_authenticated %}
+{% block body %}
+
+{% endblock %}
+    {% else %}
+    <div class="row">
+    <div class="col-md-12">
+
+    <div class="image">
+
+      <img src="/static/image/backg.jpg" width="100%"/>
+
+        <h2><span>Listen to your own collection<span class='spacer'></span><br /><span class='spacer'></span><a href="{% url 'music:login'%}">signin/signup</a> to start</span></h2>
+        <h3><span>Bored as Hell<br /> open Muzic and listen<br /> to your favorite song<br /> of your favorite Album<br /> by your favourite Artist</span></h3>
+        <h4><span>ADD YOUR FAVORITE ALBUM<br /> ADD YOUR FAVORITE SONG<br /> CHOOSE THEM<br /> PLAY THEM<br />ENJOY THEM ALL</span></h4>
+
+    </div>
+
+    </div>
+   </div>
+
+
+
+
+{% endif %}
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>

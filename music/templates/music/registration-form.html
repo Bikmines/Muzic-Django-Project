@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title  %} Music{% endblock %}</title>
+    {% load staticfiles %}
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}" />
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'music:index' %}">Muzic</a>
+        </div>
+        <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="{% url 'music:index' %}">
+                        <span class="glyphicon glyphicon-cd" aria-hidden="TRUE"></span>&nbsp;
+                        Albums
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'music:song' %}">
+                        <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                        songs
+                    </a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search" method="get" action="#">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" value="">
+                </div>
+                <button type="button" class="btn btn-default">Search</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'music:index' %}">
+                            <span class="glyphicon glyphicon-user" aria-hidden="TRUE"></span>&nbsp;
+                            welcome,{{ user.username }}
+                        </a>
+                            {% else %}
+                             <a href="{% url 'music:login' %}">
+                            <span class="glyphicon glyphicon-user" aria-hidden="TRUE"></span>&nbsp;
+                            signin
+                        </a>
+                    {% endif%}
+                </li>
+                <li>
+                    <a href="{% url 'music:album-add' %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="TRUE"></span>&nbsp;
+                        Add album
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{% url 'music:logout' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="TRUE"></span>&nbsp;
+                        logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                     <div class="panel-heading">Create New Account</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% include 'music/form-template.html' %}
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success ">
+                                        Submit
+                                    </button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
