@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>{% block title  %} Music{% endblock %}</title>
     {% load staticfiles %}
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-
-
-
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}" />
 </head>
 
@@ -24,7 +22,7 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
@@ -32,28 +30,35 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'music:index' %}">Muzic</a>
+            <a class="navbar-brand" href="{% url 'music:index' %}"><p>Muzic</p></a>
         </div>
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li>
                     <a href="{% url 'music:index' %}">
                         <span class="glyphicon glyphicon-cd" aria-hidden="TRUE"></span>&nbsp;
                         Albums
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'music:song' %}">
-                        <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                    {% if user.is_authenticated %}
+                       <a href="{% url 'music:song' %}">
+                         <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
                         songs
-                    </a>
+                       </a>
+                    {% else %}
+                        <a href="#">
+                         <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                        songs
+                       </a>
+                    {% endif %}
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" role="search" method="GET" action="">
+            <form class="navbar-form navbar-left" role="search" method="get" action="#">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
+                    <input type="text" class="form-control" name="q" value="" placeholder=" search anything">
                 </div>
-                <button type="submit" class="btn btn-default" value="search">Search</button>
+                <button type="button" class="btn btn-primary">Search</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -61,8 +66,6 @@
                         <a href="{% url 'music:index' %}">
                             <span class="glyphicon glyphicon-user" aria-hidden="TRUE"></span>&nbsp;
                             welcome,{{ user.username }}
-
-
                         </a>
                             {% else %}
                              <a href="{% url 'music:login' %}">
@@ -91,29 +94,61 @@
 {% block body %}
 
 {% endblock %}
-    {% else %}
-    <div class="row">
-    <div class="col-md-12">
+{% else %}
+    {% if form.errors %}
+    <p class="error">Sorry, that's not a valid username or password</p>
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-md-offset-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Login Form</div>
+                    <div class="panel-body" style="padding:10px">
+                        <form action="{% url 'music:login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-key"></i>
+                                    </div>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-sign-in"></i> Submit</button>
 
-    <div class="image">
-
-      <img src="/static/image/backg.jpg" width="100%"/>
-
-        <h2><span>Listen to your own collection<span class='spacer'></span><br /><span class='spacer'></span><a href="{% url 'music:login'%}">signin/signup</a> to start</span></h2>
-        <h3><span>Bored as Hell<br /> open Muzic and listen<br /> to your favorite song<br /> of your favorite Album<br /> by your favourite Artist</span></h3>
-        <h4><span>ADD YOUR FAVORITE ALBUM<br /> ADD YOUR FAVORITE SONG<br /> CHOOSE THEM<br /> PLAY THEM<br />ENJOY THEM ALL</span></h4>
-
+                            <input type="hidden" name="next" value="{{ 'music:index'|escape }}" />
+                        </form>
+                       <div>New here, <a href="{% url 'music:register' %}"> Register</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    </div>
-   </div>
-
-
-
-
 {% endif %}
 
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        console.log('ready');
+        $('#example').DataTable();
+    } );
+</script>
+<script>
+    $(document).ready(function() {
+        console.log('ready');
+        $('#example1').DataTable();
+    } );
+</script>
 </body>
 </html>

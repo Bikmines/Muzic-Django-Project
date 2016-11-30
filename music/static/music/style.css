@@ -1,13 +1,25 @@
 body{
-    background-image: url("images/back.jpg");
+    background-image: url("images/bg01.png");
 }
 
 .navbar{
     border-radius: 0;
 }
 
-.navbar-brand{
-    font-family: 'lobster', cursive ;
+.navbar-brand {
+    font-family: 'lobster';
+}
+
+.navbar-brand p{
+    color: #2196f3;
+    font-size: 30px;
+}
+
+#topNavBar ul li a:hover{
+    color: white;
+}
+.navbar-nav li:hover {
+    background-color: #42b0f4;
 }
 
 .image {

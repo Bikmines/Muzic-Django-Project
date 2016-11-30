@@ -11,6 +11,7 @@ class Album(models.Model):
     height_field=models.IntegerField(default=0)
     width_field = models.IntegerField(default=0)
     genre = models.CharField(max_length=250)
+    is_favorite = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete = models.CASCADE, null = True, default = None)
     created = models.DateTimeField(auto_now_add=True, blank=True)
 

@@ -5,12 +5,10 @@
             <div class="row">
                  {% for album in object_list %}
                 <div class="col-md-4">
-
-                 <div class="well">
-
+                 <div class="well well-lg">
+                 
                  <a href="{%   url 'music:detail' album.id %}"> <img src="{{ album.album_logo.url }}" class="img-responsive" style="height: 350px" ></a>
-                 <p style="font-size: 13px; color: indianred">added: {{ album.created }} </p>
-                 <div class="fb-like" data-href="http://127.0.0.1:8000/music/{{ album.id }}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>
+                 <p style="font-size: 13px; color: black">{{ album.created }} </p>
                  <p style="font-size: 25px;"> {{ album.artist }} </p>
                  <p style="font-size: 20px;"> Album: {{ album.album_title}} </p>
                  <p style="font-size: 15px;"> Genre: {{ album.genre }} </p>
@@ -33,57 +31,49 @@
                                 </a>
 
                                <div class="btn-group">
-                                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Share
                                   </button>
-                                  <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="glyphicon glyphicon-chevron-down"></span>
                                   </button>
                                   <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/music/{{ album.id }}">Facebook</a>
+                                    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/music/{{ album.id }}"><p style="text-align:center">Facebook</p></a>
                                       <div class="dropdown-divider"></div>
-                                      <a class="dropdown-item" href="https://twitter.com/home?status=I'm%20going%20to%20learn%20to%20Code...%20Come%20build%20an%20web%20apsp%20with%20me!%20%23CFE%20and%20@justinmitchel%20http://127.0.0.1:8000/music/{{ album.id }}">Twitter</a>
+                                      <a class="dropdown-item" href="https://twitter.com/home?status=I'm%20going%20to%20learn%20to%20Code...%20Come%20build%20an%20web%20apsp%20with%20me!%20%23CFE%20and%20@justinmitchel%20http://127.0.0.1:8000/music/{{ album.id }}"><p style="text-align: center">Twitter</p></a>
                                       <div class="dropdown-divider"></div>
-                                      <a class="dropdown-item" href="https://plus.google.com/share?url=http://127.0.0.1:8000/music/{{ album.id }}">Google Plus</a>
+                                      <a class="dropdown-item" href="https://plus.google.com/share?url=http://127.0.0.1:8000/music/{{ album.id }}"> <p style="text-align: center">Google plus</p></a>
                                   </div>
-
                                </div>
 
-                     <div class="fb-comments" data-href="http://127.0.0.1:8000/music/{{ album.id }}" data-width="200px" data-height="200px" data-numposts="1"></div>
-
-
-
-                  </div>
-
+                     </div>
                 </div>
                 {% endfor %}
              </div>
 
         {# .... **Now the pagination section** .... #}
-        <div class="row">
-          <div class="col-md-offset-1">
-            {% if is_paginated %}
-                <ul class="pagination">
-                    {% if page_obj.has_previous %}
-                        <li>
-                            <span><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">Previous</a></span>
-                        </li>
-                    {% endif %}
-                    <li class="">
-                        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
-                    </li>
-                    {% if page_obj.has_next %}
-                        <li>
-                            <span><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">Next</a></span>
-                        </li>
-                    {% endif %}
-                </ul>
-            {% else %}
-                <p>Add more album..</p>
-            {% endif %}
-          </div>
-        </div>
-    </div>
+        {% if page_obj.has_other_pages %}
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                  <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in page_obj.paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                  <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+        {% endif %}
+       </div>
 
 
 {% endblock %}

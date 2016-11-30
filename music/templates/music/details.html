@@ -15,75 +15,66 @@
       </div>
 
      <div class="col-md-9">
-        <div class="well">
-        <a href="{% url 'music:addsong' album.id  %}">
-           <span class="glyphicon glyphicon-plus" aria-hidden="TRUE">
-           </span>&nbsp;
-           Add song
-       </a>
-         <table class="table table-striped">
-             <thead>
-             <th>Artist</th>
-             <th>Album</th>
-             <th>Song-title</th>
-             <th>Song</th>
-             <th>Action</th>
-             <th>Genre</th>
-
-             </thead>
-             <tbody>
-             {% for song in album.song_set.all %}
-             <tr>
-                 <td>{{ album.artist }}</td>
-                 <td>{{ album.album_title }}</td>
-                 <td>{{ song.title_name }}</td>
-                 <td>
-                     <audio controls="controls" preload='none'>
-                        <source src="{{ song.title.url }}" type="audio/mpeg" />
-                     </audio>
-                 </td>
-                 <td>
-                     <form action="{% url 'music:songdelete' song.id%}" method="post" style="display: inline; ">
-                        {% csrf_token %}
-                        <input type="hidden"  value="Confirm" />
-                        <button type="submit" class="btn btn-default btn-sm">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                     </form>
-                 </td>
-                 <td>{{ album.genre }}</td>
-             </tr>
-             {% endfor %}
-             </tbody>
-         </table>
-            <div class="row">
-          <div class="col-md-offset-1">
-            {% if is_paginated %}
-                <ul class="pagination">
-                    {% if page_obj.has_previous %}
-                        <li>
-                            <span><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">Previous</a></span>
-                        </li>
-                    {% endif %}
-                    <li class="">
-                        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
-                    </li>
-                    {% if page_obj.has_next %}
-                        <li>
-                            <span><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">Next</a></span>
-                        </li>
-                    {% endif %}
-                </ul>
-            {% else %}
-                <p>Add more song..</p>
-            {% endif %}
-          </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <strong style="text-transform: uppercase">{{ album.album_title }}</strong>
+                <a href="{% url 'music:addsong' album.id  %}" class="btn btn-default pull-right btn-xs">
+                   <span class="glyphicon glyphicon-plus" aria-hidden="TRUE">
+                   </span>&nbsp;
+                   Add song
+               </a>
+            </div>
+            <div class="panel-body" style="padding: 0">
+            <div class="well">
+                <table id="example" class="table table-striped table-condensed" cellspacing="5px" width="100%">
+                     <thead>
+                        <tr>
+                            <th>Artist</th>
+                             <th>Album</th>
+                             <th>Song-title</th>
+                             <th>Song</th>
+                             <th>Action</th>
+                             <th>Genre</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                     {% for song in album.song_set.all %}
+                         <tr>
+                             <td>{{ album.artist }}</td>
+                             <td>{{ album.album_title }}</td>
+                             <td>{{ song.title_name }}</td>
+                             <td>
+                                 <audio controls="controls" preload='none'>
+                                    <source src="{{ song.title.url }}" type="audio/mpeg" />
+                                 </audio>
+                             </td>
+                             <td>
+                                 <form action="{% url 'music:songdelete' song.id%}" method="post" style="display: inline; ">
+                                    {% csrf_token %}
+                                    <input type="hidden"  value="Confirm" />
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                 </form>
+                             </td>
+                             <td>{{ album.genre }}</td>
+                         </tr>
+                     {% endfor %}
+                     </tbody>
+                 </table>
+               </div>
+            </div>
         </div>
-
-        </div>
+     </div>
       </div>
- </div>
+<div class="row1" >
+    <div class="col-md-3"></div>
+    <div class="col-md-9">
+     <div class="well">
+        <div class="fb-comments" data-href="http://127.0.0.1:8000/music/{{ album.id }}"data-width="100%" data-numposts="10"></div>
+    </div>
+     </div>
+    </div>
+
 </div>
-
-
 {% endblock %}

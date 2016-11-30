@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}" />
 </head>
 <body>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
@@ -20,28 +20,35 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'music:index' %}">Muzic</a>
+            <a class="navbar-brand" href="{% url 'music:index' %}"><p>Muzic</p></a>
         </div>
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li>
                     <a href="{% url 'music:index' %}">
                         <span class="glyphicon glyphicon-cd" aria-hidden="TRUE"></span>&nbsp;
                         Albums
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'music:song' %}">
-                        <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                    {% if user.is_authenticated %}
+                       <a href="{% url 'music:song' %}">
+                         <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
                         songs
-                    </a>
+                       </a>
+                    {% else %}
+                        <a href="#">
+                         <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                        songs
+                       </a>
+                    {% endif %}
                 </li>
             </ul>
             <form class="navbar-form navbar-left" role="search" method="get" action="#">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="">
+                    <input type="text" class="form-control" name="q" value="" placeholder="     search">
                 </div>
-                <button type="button" class="btn btn-default">Search</button>
+                <button type="button" class="btn btn-primary">Search</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -77,7 +84,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                      <div class="panel-heading">Create New Account</div>
                     <div class="panel-body">
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
@@ -85,7 +92,7 @@
                             {% include 'music/form-template.html' %}
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success ">
+                                    <button type="submit" class="btn btn-primary ">
                                         Submit
                                     </button>
                             </div>

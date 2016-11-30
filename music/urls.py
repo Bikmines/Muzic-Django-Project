@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', views.Detailview.as_view() ,name="detail"),
     url(r'^album/add/$', views.Albumcreate.as_view(), name="album-add"),
     url(r'^album/(?P<album>[0-9]+)/addsong/$', views.addsong.as_view(), name="addsong"),
+    url(r'^album/(?P<album>[0-9]+)/favorite/$',views.favorite, name="favorite"),
     url(r'^song/$', views.songs.as_view(), name="song"),
     url(r'^album/(?P<pk>[0-9]+)/$', views.Albumupdate.as_view(), name="albumupdate"),
     url(r'^album/(?P<pk>[0-9]+)/delete/$', views.Albumdelete.as_view(), name="albumdelete"),

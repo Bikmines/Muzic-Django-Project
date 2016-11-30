@@ -43,16 +43,25 @@ class Indexview(ListView):
 
         return queryset
 
+def favorite(request, album_id):
+    album= get_object_or_404(Album, pk=album_id)
+    try:
+        album_selected =  album.get(pk=request.POST['album'])
+    except(KeyError, Album.DoesNotExist):
+        return render(request, 'music/index.html')
+    else:
+        album_selected.is_favorite = True
+        album_selected.save()
+        return render(request, 'music/index.html', {'album':album})
+
+
 
 class Detailview(DetailView):
     model = Album
-    paginate_by = 5
     template_name = 'music/details.html'
 
 class songs(ListView):
     template_name = 'music/songs.html'
-    paginate_by = 10
-
 
     def get_queryset(self):
         # get all albums that was created by currently logged in user
@@ -164,7 +173,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('music:index')
+    return redirect('music:login')
 
 class ProfileView(DetailView):
     model = User

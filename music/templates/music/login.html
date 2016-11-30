@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <title>{% block title  %} Music{% endblock %}</title>
     {% load staticfiles %}
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
     <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}" />
 </head>
 <body>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
@@ -20,28 +18,35 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% url 'music:index' %}">Muzic</a>
+            <a class="navbar-brand" href="{% url 'music:index' %}"><p>Muzic</p></a>
         </div>
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li>
                     <a href="{% url 'music:index' %}">
                         <span class="glyphicon glyphicon-cd" aria-hidden="TRUE"></span>&nbsp;
                         Albums
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'music:song' %}">
-                        <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                     {% if user.is_authenticated %}
+                       <a href="{% url 'music:song' %}">
+                         <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
                         songs
-                    </a>
+                       </a>
+                    {% else %}
+                        <a href="#">
+                         <span class="glyphicon glyphicon-music" aria-hidden="TRUE"></span>&nbsp;
+                        songs
+                       </a>
+                    {% endif %}
                 </li>
             </ul>
             <form class="navbar-form navbar-left" role="search" method="get" action="#">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="">
+                    <input type="text" class="form-control" name="q" value=""  placeholder="     search">
                 </div>
-                <button type="button" class="btn btn-default">Search</button>
+                <button type="button" class="btn btn-primary">Search</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -77,16 +82,16 @@
 
 
     {% if form.errors %}
-    <p> class="error">Sorry, that's not a valid username or password</p>
+    <p class="error">Sorry, that's not a valid username or password</p>
     {% endif %}
 
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                     <div class="panel-heading">Login Form</div>
                     <div class="panel-body" style="padding:10px">
-                        <form action="" method="post">
+                        <form action="{% url 'music:login' %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
                                 <div class="input-group">
@@ -104,7 +109,7 @@
                                     <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-success pull-right"><i class="fa fa-sign-in"></i> Submit</button>
+                            <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-sign-in"></i> Submit</button>
 
                             <input type="hidden" name="next" value="{{ 'music:index'|escape }}" />
                         </form>
